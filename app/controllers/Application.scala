@@ -1,28 +1,29 @@
 package controllers
 
-import scala.concurrent._
-
-import play.api._
-import play.api.mvc._
-
+import models._
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
-import play.api.libs.iteratee.Done
+import play.api.mvc._
+import play.api.mvc.Results._
+import play.api.mvc.BodyParsers._
+import play.api.Logger
 
-import reactivemongo.api._
-import reactivemongo.bson.BSONObjectID
-import play.modules.reactivemongo._
-import play.modules.reactivemongo.json.collection.JSONCollection
-
-import play.autosource.reactivemongo._
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import play.api.Play.current
-
-object Application extends ReactiveMongoAutoSourceController[JsObject] {
-  val coll = db.collection[JSONCollection]("postits")
-
+object Application {
+ 
   def index = Action {
     Ok(views.html.index("ok"))
+  }
+
+  def insert = Action(parse.json) { request =>
+  	Logger.info("request "+request )
+  	Logger.info("request body "+request.body )
+    request.body.validate[Postit].map{ 
+      case (p) => Ok("Hello " + p.text + ", you're "+p.id)
+    }.recoverTotal{
+      e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
+    }
+  }
+
+  def findAll = Action { 
+  	Ok(Json.toJson(Postits.all))
   }
 }
