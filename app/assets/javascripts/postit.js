@@ -4,6 +4,7 @@ var app = angular.module("app", ["ngResource"])
   }])
   .controller("PostitCtrl", ["$scope", "Postit", function($scope, Postit) {
 
+    $scope.starsOnly = false;
     $scope.createForm = {};
     $scope.postits = Postit.query();
 
@@ -26,4 +27,12 @@ var app = angular.module("app", ["ngResource"])
         $scope.postits = Postit.query();
       })
     }
+
+    $scope.starsOnlyFilter=function(){
+      return function(postit) {
+        if(!$scope.starsOnly) return true;
+        else return postit.star;
+      }
+    }
+
 }]);

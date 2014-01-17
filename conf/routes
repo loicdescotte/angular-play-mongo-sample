@@ -5,6 +5,8 @@
 GET 	/						   controllers.Application.index
 GET     /postit                    controllers.Application.findAll
 POST    /postit                    controllers.Application.insert
+POST	/postit/:id				   controllers.Application.update(id: Int)
+DELETE	/postit/:id				   controllers.Application.delete(id: Int)
 
 
 # Map static resources from the /public folder to the /assets URL path

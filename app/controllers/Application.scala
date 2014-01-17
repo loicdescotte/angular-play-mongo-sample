@@ -24,11 +24,34 @@ object Application {
       	Ok("Insert ok")
       }
     }.recoverTotal{
-      e => {      	
-      	Logger.error("Error : " + JsError.toFlatJson(e))      	
+      e => {      
+        val error = JsError.toFlatJson(e)	
+      	Logger.error("Error : " + error)      	
       	Logger.error("Request : " + request.body)
-      	BadRequest("Bad request")
+      	BadRequest(error)
       }
     }
   }
+
+  def update(id: Int) = Action(parse.json) { request =>
+    request.body.validate[Postit].map{ 
+      case (postit) => {
+        Postits.update(id, postit)
+        Ok("Update ok")
+      }
+    }.recoverTotal{
+      e => {      
+        val error = JsError.toFlatJson(e) 
+        Logger.error("Error : " + error)        
+        Logger.error("Request : " + request.body)
+        BadRequest(error)
+      }
+    }
+  }
+
+  def delete(id: Int) = Action { 
+      Postits.delete(id)
+      Ok("Delete ok")
+  }
+
 }

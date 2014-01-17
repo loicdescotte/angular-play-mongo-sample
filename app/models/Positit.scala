@@ -14,12 +14,14 @@ object Postit  {
 object Postits {
   //fake db
   var db: Map[Int, Postit] = Map()
+  var sequenceIndex = 1
 
   def all = db.values
 
   def insert(postit: Postit) = {
-    postit.id = Some(db.size)
-    val entry = (db.size, postit)
+    sequenceIndex += 1
+    postit.id = Some(sequenceIndex)
+    val entry = (sequenceIndex, postit)
     db += entry
   }
 
