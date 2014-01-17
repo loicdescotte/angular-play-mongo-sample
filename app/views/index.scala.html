@@ -1,13 +1,12 @@
-@(message: String)
 
-@main("Welcome to Play 2.1") {
+@main("angular-app") {
 
     <div ng-controller="PostitCtrl">
       <label for="name">name:</label><input ng-model="createForm.text"/>
       <button ng-click="create()">Create new postit</button>
       <hr/>
       <table>
-      <thead><th>name</th><th>age</th><td>actions</td></thead>
+      <thead><th>text</th><th>star</th><td>actions</td></thead>
       <tbody ng-repeat="postit in postits">
         <tr>
           <td><input ng-model="postit.text"/></td>

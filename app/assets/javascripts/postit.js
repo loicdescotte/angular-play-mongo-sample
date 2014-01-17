@@ -8,7 +8,7 @@ var app = angular.module("app", ["ngResource"])
     $scope.postits = Postit.query();
 
     $scope.create = function() {
-      var postit = new Postit({name: $scope.createForm.name});
+      var postit = new Postit({text: $scope.createForm.text, star: false});
       postit.$save(function(){
         $scope.createForm = {};
         $scope.postits = Postit.query();

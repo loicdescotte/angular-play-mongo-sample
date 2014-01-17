@@ -15,14 +15,18 @@ object Postits {
   //fake db
   var db: Map[Int, Postit] = Map()
 
-  def all = List(db.values)
+  def all = db.values
 
   def insert(postit: Postit) = {
     postit.id = Some(db.size)
-    db += ((db.size, postit))
+    val entry = (db.size, postit)
+    db += entry
   }
 
-  def update(id: Int, postit: Postit) = db += ( (postit.id.getOrElse(-1), postit) )
+  def update(id: Int, postit: Postit) = {
+    val entry = (postit.id.getOrElse(-1), postit)
+    db += entry
+  }
 
   def delete(id: Int) = db -= id
 }

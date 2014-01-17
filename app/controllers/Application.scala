@@ -10,20 +10,25 @@ import play.api.Logger
 object Application {
  
   def index = Action {
-    Ok(views.html.index("ok"))
-  }
-
-  def insert = Action(parse.json) { request =>
-  	Logger.info("request "+request )
-  	Logger.info("request body "+request.body )
-    request.body.validate[Postit].map{ 
-      case (p) => Ok("Hello " + p.text + ", you're "+p.id)
-    }.recoverTotal{
-      e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
-    }
+    Ok(views.html.index())
   }
 
   def findAll = Action { 
   	Ok(Json.toJson(Postits.all))
+  }
+
+  def insert = Action(parse.json) { request =>
+    request.body.validate[Postit].map{ 
+      case (postit) => {
+      	Postits.insert(postit)
+      	Ok("Insert ok")
+      }
+    }.recoverTotal{
+      e => {      	
+      	Logger.error("Error : " + JsError.toFlatJson(e))      	
+      	Logger.error("Request : " + request.body)
+      	BadRequest("Bad request")
+      }
+    }
   }
 }
