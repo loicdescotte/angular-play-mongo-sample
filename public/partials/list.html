@@ -1,0 +1,23 @@
+<div ng-controller="PostitCtrl">
+      
+      <label for="starsOnly">Stars only:</label><input type="checkbox" name="starsOnly" ng-model="starsOnly"/>
+      <hr/>
+
+      <h2>Add post-it</h2>
+      <input name="text" ng-model="createForm.text"/>
+      <button class="btn btn-primary" ng-click="create()">Add</button>
+      <hr/><br/>
+
+      <div>Search: <input ng-model="searchText"></div>
+      <br/>
+
+      <div class="twipsies well" ng-repeat="postit in postits | filter:searchText | filter:starsOnlyFilter()">
+         <fieldset>
+              <div class="input"> 
+                <input ng-model="postit.text"/>
+                <input type="checkbox" ng-model="postit.star"/>
+                <button class="btn btn-primary" ng-click="update(postit)">Update</button><button class="btn btn-danger" ng-click="remove(postit)">Delete</button>
+              </div>
+        </fieldset>
+      </div>
+</div>

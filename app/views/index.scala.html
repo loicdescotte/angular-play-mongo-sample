@@ -1,27 +1,8 @@
 
 @main("angular-app") {
 
-    <div ng-controller="PostitCtrl">
-      
-      <label for="starsOnly">Stars only:</label><input type="checkbox" name="starsOnly" ng-model="starsOnly"/>
-      <hr/>
-
-      <label for="text">text:</label><input name="text" ng-model="createForm.text"/>
-      <button ng-click="create()">Create new postit</button>
-      <hr/>
-
-      <div>Search: <input ng-model="searchText"></div>
-
-      <table>
-      <thead><th>text</th><th>star</th><td>actions</td></thead>
-      <tbody ng-repeat="postit in postits | filter:searchText | filter:starsOnlyFilter()">
-        <tr>
-          <td><input ng-model="postit.text"/></td>
-          <td><input type="checkbox" ng-model="postit.star"/></td>
-          <td><button ng-click="update(postit)">Update</button><button ng-click="remove(postit)">Delete</button></td>
-        </tr>
-      </tbody>
-      </div>
-    </div>
+ <div class="view-container">
+    <div ng-view class="view-frame"></div>
+  </div>
 
 }

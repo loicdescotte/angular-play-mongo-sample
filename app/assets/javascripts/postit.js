@@ -1,6 +1,20 @@
-var app = angular.module("app", ["ngResource"])
+var app = angular.module("app", ["ngResource", "ngRoute"])
   .factory('Postit', ["$resource", function($resource){
     return $resource('postit/:id', { "id" : "@id" });
+  }])
+  .config(['$routeProvider',
+  function($routeProvider) {
+    $routeProvider.
+      when('/', {
+        templateUrl: 'assets/partials/list.html',
+        controller: 'PostitCtrl'
+      }).
+      when('/about', {
+        templateUrl: 'assets/partials/about.html'
+      }).
+      otherwise({
+        redirectTo: '/'
+      });
   }])
   .controller("PostitCtrl", ["$scope", "Postit", function($scope, Postit) {
 
