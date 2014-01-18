@@ -1,0 +1,5 @@
+<div class="input"> 
+  <input ng-model="postit.text"/>
+  <input type="checkbox" ng-model="postit.star" ng-change="update(postit)"/>
+  <button class="btn btn-primary" ng-click="update(postit)">Update</button><button class="btn btn-danger" ng-click="remove(postit)">Delete</button>
+</div>

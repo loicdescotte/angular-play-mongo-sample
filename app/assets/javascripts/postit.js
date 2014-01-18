@@ -49,4 +49,10 @@ var app = angular.module("app", ["ngResource", "ngRoute"])
       }
     }
 
-}]);
+}])
+.directive('postit', function () {
+  return {
+    restrict: 'E',
+    templateUrl: 'assets/templates/postit.html'
+  };
+});
