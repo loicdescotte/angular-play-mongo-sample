@@ -11,7 +11,7 @@
       <div>Search: <input ng-model="searchText"></div>
       <br/>
 
-      <div class="twipsies well" ng-repeat="postit in postits | filter:searchText | filter:starsOnlyFilter()">
+      <div ng-repeat="postit in postits | filter:searchText | filter:starsOnlyFilter()">
          <postit/>
       </div>
 </div>
