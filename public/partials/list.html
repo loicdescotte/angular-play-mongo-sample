@@ -11,7 +11,9 @@
       <div>Search: <input ng-model="searchText"></div>
       <br/>
 
-      <div ng-repeat="postit in postits | filter:searchText | filter:starsOnlyFilter()">
+      <div class="list" ng-repeat="postit in postits | filter:searchText | filter:starsOnlyFilter()">
          <postit/>
       </div>
+
+      <button class="btn btn-primary" ng-click="createEmpty()">+</button>
 </div>

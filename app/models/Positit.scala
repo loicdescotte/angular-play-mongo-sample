@@ -1,7 +1,7 @@
 package models
 
 import play.api.libs.json.Json
-import scala.collection.mutable.Map
+import scala.collection.immutable.TreeMap
 
 case class Postit(text: String,
                   star: Boolean = false,
@@ -13,7 +13,7 @@ object Postit  {
 
 object Postits {
   //fake db
-  var db: Map[Int, Postit] = Map()
+  var db: TreeMap[Int, Postit] = TreeMap()
   var sequenceIndex = 1
 
   def all = db.values
@@ -22,13 +22,15 @@ object Postits {
     sequenceIndex += 1
     postit.id = Some(sequenceIndex)
     val entry = (sequenceIndex, postit)
-    db += entry
+    db = db + entry
   }
 
   def update(id: Int, postit: Postit) = {
     val entry = (postit.id.getOrElse(-1), postit)
-    db += entry
+    db = db + entry
   }
 
-  def delete(id: Int) = db -= id
+  def delete(id: Int) = {
+    db = db - id
+  }
 }

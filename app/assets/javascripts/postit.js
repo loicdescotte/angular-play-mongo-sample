@@ -30,6 +30,13 @@ var app = angular.module("app", ["ngResource", "ngRoute"])
       })
     }
 
+    $scope.createEmpty = function() {
+      var postit = new Postit({text: "", star: false});
+      postit.$save(function(){
+        $scope.postits = Postit.query();
+      })
+    }
+
     $scope.remove = function(postit) {
       postit.$remove(function() {
         $scope.postits = Postit.query();
