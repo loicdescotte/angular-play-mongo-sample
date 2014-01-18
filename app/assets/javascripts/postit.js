@@ -44,9 +44,7 @@ var app = angular.module("app", ["ngResource", "ngRoute"])
     }
 
     $scope.update = function(postit) {
-      postit.$save(function() {
-        $scope.postits = Postit.query();
-      })
+      postit.$save();
     }
 
     $scope.starsOnlyFilter=function(){

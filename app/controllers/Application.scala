@@ -37,7 +37,7 @@ object Application {
     request.body.validate[Postit].map{ 
       case (postit) => {
         Postits.update(id, postit)
-        Ok("Update ok")
+        Ok(Json.toJson(postit))
       }
     }.recoverTotal{
       e => {      
