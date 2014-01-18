@@ -6,11 +6,11 @@ var app = angular.module("app", ["ngResource", "ngRoute"])
   function($routeProvider) {
     $routeProvider.
       when('/', {
-        templateUrl: 'assets/partials/list.html',
+        templateUrl: 'partials/list.html',
         controller: 'PostitCtrl'
       }).
       when('/about', {
-        templateUrl: 'assets/partials/about.html'
+        templateUrl: 'partials/about.html'
       }).
       otherwise({
         redirectTo: '/'
@@ -53,6 +53,6 @@ var app = angular.module("app", ["ngResource", "ngRoute"])
 .directive('postit', function () {
   return {
     restrict: 'E',
-    templateUrl: 'assets/templates/postit.html'
+    templateUrl: 'templates/postit.html'
   };
 });
