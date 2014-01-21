@@ -9,8 +9,9 @@ import play.api.Logger
 
 object Application {
  
-  def index = Action {
-    Ok(views.html.index())
+  val index = {
+    val result = Ok(views.html.index())
+    Action(result)
   }
 
   def findAll = Action { 
