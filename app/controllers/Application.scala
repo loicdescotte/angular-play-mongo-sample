@@ -34,18 +34,30 @@ object Application {
     }
   }
 
-  def update(id: Int) = Action(parse.json) { request =>
-    request.body.validate[Postit].map{ 
-      case (postit) => {
-        Postits.update(id, postit)
-        Ok(Json.toJson(postit))
+  def insert = Action.async(parse.json) { request =>
+    request.body.validate[Postit].map { postit =>
+      collection.insert(postit).map { lastError =>
+        Logger.debug(s"Successfully inserted with LastError: $lastError")
+        postit
       }
-    }.recoverTotal{
-      e => {      
-        val error = JsError.toFlatJson(e) 
-        Logger.error("Error : " + error)        
-        Logger.error("Request : " + request.body)
-        BadRequest(error)
+    }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
+  def update(id: Int) = Action.async(parse.json) { request =>
+      val cursor: Cursor[Postit] = collection.
+      // find all people with name `name`
+      find(Json.obj("id" -> id)).
+      // perform the query and get a cursor of JsObject
+      cursor[Postit]
+      // gather all the JsObjects in a list
+    val futurePostitList: Future[List[Postit]] = cursor.collect[List]()
+
+    // everything's ok! Let's reply with the array
+    futurePostitList.map { postit =>
+
+      collection.save(postit).map { lastError =>
+        Logger.debug(s"Successfully inserted with LastError: $lastError")
+        postit
       }
     }
   }
