@@ -36,8 +36,7 @@ object Application extends Controller with MongoController {
 
   def insert = Action.async(parse.json) { request =>
     request.body.validate[Postit].map { postit =>
-      collection.insert(postit).map { lastError =>
-        Logger.debug(s"Successfully inserted with LastError: $lastError")
+      collection.insert(postit).map { status =>
         Ok(toJson(postit))
       }
     }.getOrElse(Future.successful(BadRequest("invalid json")))
@@ -48,16 +47,14 @@ object Application extends Controller with MongoController {
     val star = (request.body \ "star").as[Boolean]
     collection.update(
       Json.obj("_id" -> BSONObjectID(id)),
-      Json.obj("$set" -> Json.obj("text" -> text, "star" -> star))).map { lastError =>
-        Logger.debug(s"Successfully inserted with LastError: $lastError")
+      Json.obj("$set" -> Json.obj("text" -> text, "star" -> star))).map { status =>
         Ok(toJson(request.body))
       }
 
   }
 
   def delete(id: String) = Action.async {
-    collection.remove(Json.obj("_id" -> BSONObjectID(id))).map { lastError =>
-      Logger.debug(s"Successfully inserted with LastError: $lastError")
+    collection.remove(Json.obj("_id" -> BSONObjectID(id))).map { status =>
       Ok("Postit deleted")
     }
   }
