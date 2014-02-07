@@ -1,12 +1,12 @@
 package models
 
 import reactivemongo.bson._
-import play.api.libs.json.Json
-import scala.collection.immutable.TreeMap
+import reactivemongo.bson.DefaultBSONHandlers._
+import play.modules.reactivemongo.json.BSONFormats._
 
-case class Postit(text: String,
+case class Postit(_id: Option[BSONObjectID],
+                  text: String,
                   star: Boolean = false)
-
 
 object Postit {
   import play.api.libs.json.Json

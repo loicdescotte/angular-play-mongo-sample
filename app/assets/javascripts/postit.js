@@ -1,6 +1,6 @@
 var app = angular.module("app", ["ngResource", "ngRoute"])
   .factory('Postit', ["$resource", function($resource){
-    return $resource('postit/:id', { "id" : "@id" });
+    return $resource('postit/:id', { "id" : "@_id.$oid" });
   }])
   .config(['$routeProvider',
   function($routeProvider) {
