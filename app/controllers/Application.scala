@@ -7,6 +7,7 @@ import play.api.libs.json._
 import play.api.mvc._
 import play.api.mvc.Results._
 import play.api.mvc.BodyParsers._
+import reactivemongo.api._
 import play.api.Logger
 
 import play.modules.reactivemongo.MongoController
@@ -22,40 +23,34 @@ object Application extends Controller with MongoController {
     Action(result)
   }
 
-  def findAll = Action { 
-  	Ok("")
+  def findAll = Action.async {
+    val postits = collection.
+      find(Json.obj()).
+      // sort them by creation date
+      sort(Json.obj("created" -> -1)).
+      // perform the query and get a cursor of JsObject
+      cursor[Postit]
+      .collect[List]()
+      
+    postits.map { postits =>
+      Ok(Json.toJson(postits))
+    }
   }
 
   def insert = Action.async(parse.json) { request =>
     request.body.validate[Postit].map { postit =>
       collection.insert(postit).map { lastError =>
         Logger.debug(s"Successfully inserted with LastError: $lastError")
-        Ok(toJson(postit))
+        Ok(Json.toJson(postit))
       }
     }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
   def update(id: Int) = Action.async(parse.json) { request =>
-      val cursor: Cursor[Postit] = collection.
-      // find all people with name `name`
-      find(Json.obj("id" -> id)).
-      // perform the query and get a cursor of JsObject
-      cursor[Postit]
-      // gather all the JsObjects in a list
-    val futurePostitList: Future[List[Postit]] = cursor.collect[List]()
-
-    // everything's ok! Let's reply with the array
-    futurePostitList.map { postit =>
-
-      collection.save(postit).map { lastError =>
-        Logger.debug(s"Successfully inserted with LastError: $lastError")
-        postit
-      }
-    }
+    Future.successful(Ok(""))
   }
 
-  def delete(id: Int) = Action { 
-      Postits.delete(id)
+  def delete(id: Int) = Action {
       Ok("Delete ok")
   }
 
