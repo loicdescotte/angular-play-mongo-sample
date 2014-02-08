@@ -26,14 +26,14 @@ var app = angular.module("app", ["ngResource", "ngRoute"])
       var postit = new Postit({text: $scope.createForm.text, star: false});
       postit.$save(function(){
         $scope.createForm = {};
-        $scope.postits = Postit.query();
+        $scope.postits.push(postit)
       })
     }
 
     $scope.createEmpty = function() {
       var postit = new Postit({text: "", star: false});
       postit.$save(function(){
-        $scope.postits = Postit.query();
+        $scope.postits.push(postit)
       })
     }
 
